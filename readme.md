@@ -35,17 +35,17 @@ cd dailyExpense
 `
     Feel free to adjust the example path according to your project structure!
 
-        Rename `.env-example` to `.env`
+                        Rename `.env-example` to `.env`
 
-        Locate the `.env-example` file in your project directory and rename it to `.env`. You can do this using the following command:
+                        Locate the `.env-example` file in your project directory and rename it to `.env`. You can do this using the following command:
 
-        ```bash
-        mv .env-example .env
-        ```
+                        ```bash
+                        mv .env-example .env
+                        ```
 
-    3.Edit the .env file
-    MONGO_URL = (your mongodb URL)
-    JWT_SECRET = (any jwt secret)
+                    3.Edit the .env file
+                    MONGO_URL = (your mongodb URL)
+                    JWT_SECRET = (any jwt secret)
 
 3.  # Running the Application
 
@@ -61,19 +61,19 @@ cd dailyExpense
 
 Secure user login and registration with JWT and cookie-based authentication.
 
-![User Authentication](images/user-authentication.png)
+![User Authentication](./images/login.png)
 
 ### 2. Expense Tracking
 
 Easily add and manage expenses with different splitting options (equal, percentage, exact).
 
-![Expense Tracking](images/expense-tracking.png)
+![Expense Tracking](./images/overall.png)
 
 ### 3. Balance Sheet
 
 View a detailed balance sheet showing how much each participant owes.
 
-![Balance Sheet](images/balance-sheet.png)
+![Balance Sheet](./images/balanceSheet.png)
 
 ## **✨ Additional Features that Make Our Application Stand Out! ✨**
 
