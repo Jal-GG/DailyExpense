@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import participantSchema from '../models/Participant.js'; // Ensure this is the correct path
+import participantSchema from '../models/Participant.js'; 
 
 const expenseSchema = new mongoose.Schema({
   description: {
@@ -12,15 +12,15 @@ const expenseSchema = new mongoose.Schema({
   },
   paidBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // Reference to User model
+    ref: 'User', 
     required: true,
   },
   splitType: {
     type: String,
-    enum: ['equal', 'exact', 'percentage'], // Allowed split types
+    enum: ['equal', 'exact', 'percentage'], 
     required: true,
   },
-  participants: [participantSchema], // Array of participants
+  participants: [participantSchema], 
 }, { timestamps: true });
 
 const Expense = mongoose.model('Expense', expenseSchema);

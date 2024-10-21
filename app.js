@@ -15,7 +15,6 @@ app.use(express.json());
 
 mongoose.connect(process.env.MONGO_URL);
 
-// Use authentication routes
 app.use('/api/auth', authRoutes);
 app.use('/api/expenses', authenticate, expenseRoutes); 
 

@@ -1,4 +1,3 @@
-// routes/auth.js
 import express from 'express';
 import User from '../models/Users.js';
 import bcrypt from 'bcryptjs';
@@ -37,10 +36,9 @@ router.post('/login', async (req, res) => {
 
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-  // Set the token as a cookie
   res.cookie('token', token, {
     httpOnly: true, // Helps prevent XSS attacks
-    secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
+    secure: process.env.NODE_ENV === 'production', 
     expires: new Date(Date.now() + 3600000) // Cookie expiration time
   });
 

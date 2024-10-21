@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const participantSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // Reference to User model
+    ref: 'User', 
     required: true,
   },
   percentage: {
@@ -16,4 +16,4 @@ const participantSchema = new mongoose.Schema({
   },
 }, { _id: false });
 
-export default participantSchema; // Export the schema, not the model
+export default participantSchema; 
