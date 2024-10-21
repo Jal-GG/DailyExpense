@@ -1,33 +1,23 @@
-import express from "express" 
-import mongoose from "mongoose";
-import bodyParser from "body-parser";
-import userRoutes from "./routes/user.js"
-import expenseRoutes from "./routes/expense.js"
-import dotenv from "dotenv";
+import express from 'express';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+import authRoutes from './routes/user.js';
+import expenseRoutes from './routes/expense.js';
+import { authenticate } from './middleware/Auth.js';
+import cookieParser from 'cookie-parser';
 
 
-const app = express();
-const PORT = process.env.PORT || 3000;
-const URL = process.env.MONGO_URL
 dotenv.config();
 
-// Middleware
-app.use(bodyParser.json());
+const app = express();
+app.use(cookieParser());
+app.use(express.json());
 
-// MongoDB connection
-console.log(URL)
-mongoose.connect("mongodb+srv://jalvrund2017:5TyeQQ1UecBdmjM9@cluster0.fc2rc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", {
-}).then(() => {
-  console.log('Connected to MongoDB');
-}).catch(err => {
-  console.error('Error connecting to MongoDB:', err.message);
-});
+mongoose.connect(process.env.MONGO_URL);
 
-// Routes
-app.use('/users', userRoutes);
-app.use('/expenses', expenseRoutes);
+// Use authentication routes
+app.use('/api/auth', authRoutes);
+app.use('/api/expenses', authenticate, expenseRoutes); 
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

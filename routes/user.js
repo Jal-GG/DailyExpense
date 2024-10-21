@@ -1,30 +1,50 @@
-import express from "express"
-import User from "../models/Users.js"
-// Create a new user
+// routes/auth.js
+import express from 'express';
+import User from '../models/Users.js';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 const router = express.Router();
-router.post('/create', async (req, res) => {
+
+// Register a new user
+router.post('/register', async (req, res) => {
+  const { name, email, password, mobile } = req.body;
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const user = new User({ name, email, password: hashedPassword, mobile });
+
   try {
-    const { name, email, mobile } = req.body;
-    const user = new User({ name, email, mobile });
     await user.save();
-    res.status(201).json({ message: 'User created successfully', user });
+    res.status(201).json({ message: 'User registered successfully' });
   } catch (error) {
-    res.status(400).json({ message: 'Error creating user', error });
+    res.status(400).json({ message: 'Error registering user', error });
   }
 });
 
-// Get user details
-router.get('/:userId', async (req, res) => {
-  try {
-    const user = await User.findById(req.params.userId);
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-    res.status(200).json(user);
-  } catch (error) {
-    res.status(400).json({ message: 'Error fetching user details', error });
+// User login
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await User.findOne({ email });
+  if (!user) {
+    return res.status(400).json({ message: 'Invalid email or password' });
   }
+
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) {
+    return res.status(400).json({ message: 'Invalid email or password' });
+  }
+
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+  // Set the token as a cookie
+  res.cookie('token', token, {
+    httpOnly: true, // Helps prevent XSS attacks
+    secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
+    expires: new Date(Date.now() + 3600000) // Cookie expiration time
+  });
+
+  res.status(200).json({ message: 'Logged in successfully' });
 });
 
 export default router;
